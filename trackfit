@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrackFit Motivation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            text-align: center;
+            padding: 30px;
+            margin: 0;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .upload-container {
+            margin-top: 40px;
+        }
+        input[type="file"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #2980b9;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #ecf0f1;
+        }
+        .upload-container p {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #2980b9;
+        }
+        /* Style for the pop-up */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 1000;
+        }
+        .popup-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+        .popup h2 {
+            margin: 10px 0;
+        }
+        .popup button {
+            background-color: #2980b9;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .popup button:hover {
+            background-color: #3498db;
+        }
+        .emoji {
+            font-size: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Upload Your Workout Photo</h1>
+    <p>Prove you've done your workout today and get motivated!</p>
+
+    <!-- Image Upload Form -->
+    <div class="upload-container">
+        <p>Upload your workout photo to track your exercise for the day:</p>
+        <input type="file" id="workoutPhoto" accept="image/*" onchange="uploadPhoto()" />
+    </div>
+
+    <!-- Popup that shows after successful photo upload -->
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h2>🎉 Congratulations! 🎉</h2>
+            <p>You've done your workout for today! 💪</p>
+            <p class="emoji">🏋️‍♂️🤸‍♀️💥</p>
+            <p>Come back tomorrow for more!</p>
+            <button onclick="closePopup()">Great!</button>
+        </div>
+    </div>
+
+    <script>
+        function uploadPhoto() {
+            const fileInput = document.getElementById('workoutPhoto');
+            if (fileInput.files && fileInput.files[0]) {
+                const file = fileInput.files[0];
+                // Show popup when the photo is uploaded
+                showPopup();
+            }
+        }
+
+        function showPopup() {
+            const popup = document.getElementById('popup');
+            popup.style.display = 'flex';
+        }
+
+        function closePopup() {
+            const popup = document.getElementById('popup');
+            popup.style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
