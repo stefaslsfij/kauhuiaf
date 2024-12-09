@@ -3,35 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TrackFit Motivation</title>
+    <title>Workout Upload</title>
     <style>
+        /* General body styling */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f4f8;
-            text-align: center;
-            padding: 30px;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             margin: 0;
         }
-        h1 {
-            color: #2c3e50;
-        }
-        .upload-container {
-            margin-top: 40px;
-        }
-        input[type="file"] {
-            padding: 10px;
-            font-size: 16px;
-            border: 2px solid #2980b9;
+
+        /* Container styling */
+        .container {
+            background-color: white;
+            padding: 20px;
             border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Styling the upload button */
+        .upload-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
-            background-color: #ecf0f1;
+            font-size: 16px;
+            margin-bottom: 20px;
         }
-        .upload-container p {
-            margin-top: 20px;
+
+        .upload-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Hidden input field */
+        input[type="file"] {
+            display: none;
+        }
+
+        /* Loading animation container */
+        .loading-container {
+            display: none;
+            text-align: center;
             font-size: 18px;
-            color: #2980b9;
+            color: #555;
         }
-        /* Style for the pop-up */
+
+        /* Spinner for loading animation */
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+
+        /* Spinner animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Popup styling */
         .popup {
             display: none;
             position: fixed;
@@ -42,79 +89,93 @@
             background-color: rgba(0, 0, 0, 0.5);
             justify-content: center;
             align-items: center;
-            text-align: center;
-            z-index: 1000;
         }
+
         .popup-content {
             background-color: white;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-            width: 100%;
+            text-align: center;
+            width: 300px;
         }
+
         .popup h2 {
-            margin: 10px 0;
+            color: #4CAF50;
+            font-size: 24px;
         }
+
+        .popup img {
+            max-width: 100px;
+            margin-bottom: 20px;
+        }
+
         .popup button {
-            background-color: #2980b9;
+            background-color: #4CAF50;
             color: white;
             padding: 10px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
         }
+
         .popup button:hover {
-            background-color: #3498db;
-        }
-        .emoji {
-            font-size: 40px;
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
 
-    <h1>Upload Your Workout Photo</h1>
-    <p>Prove you've done your workout today and get motivated!</p>
-
-    <!-- Image Upload Form -->
-    <div class="upload-container">
-        <p>Upload your workout photo to track your exercise for the day:</p>
-        <input type="file" id="workoutPhoto" accept="image/*" onchange="uploadPhoto()" />
+<div class="container">
+    <h1>Upload Your Workout Picture</h1>
+    <button class="upload-btn" onclick="document.getElementById('file-input').click()">Upload Your Workout Photo</button>
+    <input type="file" id="file-input" onchange="handleFileUpload()" />
+    
+    <!-- Loading container -->
+    <div class="loading-container" id="loading-container">
+        <p>Analyzing Photo...</p>
+        <div class="spinner"></div>
     </div>
+</div>
 
-    <!-- Popup that shows after successful photo upload -->
-    <div id="popup" class="popup">
-        <div class="popup-content">
-            <h2>🎉 Congratulations! 🎉</h2>
-            <p>You've done your workout for today! 💪</p>
-            <p class="emoji">🏋️‍♂️🤸‍♀️💥</p>
-            <p>Come back tomorrow for more!</p>
-            <button onclick="closePopup()">Great!</button>
-        </div>
+<!-- Popup for success message -->
+<div class="popup" id="popup">
+    <div class="popup-content">
+        <h2>Congrats!</h2>
+        <img src="https://img.icons8.com/ios/452/success.png" alt="Success" />
+        <p>You did a great workout today! Come back tomorrow!</p>
+        <button onclick="closePopup()">Got it!</button>
     </div>
+</div>
 
-    <script>
-        function uploadPhoto() {
-            const fileInput = document.getElementById('workoutPhoto');
-            if (fileInput.files && fileInput.files[0]) {
-                const file = fileInput.files[0];
-                // Show popup when the photo is uploaded
+<script>
+    // Function to handle the file upload
+    function handleFileUpload() {
+        var fileInput = document.getElementById('file-input');
+        var file = fileInput.files[0];
+        
+        if (file) {
+            // Show loading animation
+            document.getElementById('loading-container').style.display = 'block';
+            setTimeout(function() {
+                // Hide loading animation after 2 seconds and show success popup
+                document.getElementById('loading-container').style.display = 'none';
                 showPopup();
-            }
+            }, 2000); // Simulate a 2-second delay for photo analysis
         }
+    }
 
-        function showPopup() {
-            const popup = document.getElementById('popup');
-            popup.style.display = 'flex';
-        }
+    // Function to show success popup
+    function showPopup() {
+        document.getElementById('popup').style.display = 'flex';
+    }
 
-        function closePopup() {
-            const popup = document.getElementById('popup');
-            popup.style.display = 'none';
-        }
-    </script>
+    // Function to close the popup
+    function closePopup() {
+        document.getElementById('popup').style.display = 'none';
+    }
+</script>
 
 </body>
 </html>
+
